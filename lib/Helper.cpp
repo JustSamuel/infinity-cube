@@ -2,7 +2,7 @@
 // Created by Samuel on 13/11/2020.
 //
 #pragma  once
-#include "main.h"
+#include "Helper.h"
 
 /**
  * Returns an array of pointers on the heap for a index based segment. Intuitively the cube is split into 24 segments

@@ -1,4 +1,5 @@
-#include "main.h"
+#include <Arduino.h>
+#include "InfintyCube.h"
 
 SegmentBase *strips[SEGMENT_COUNT];
 
