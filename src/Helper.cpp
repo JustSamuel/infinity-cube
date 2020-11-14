@@ -17,7 +17,7 @@ CRGB** getSegmentFromIndex(int index){
 
     // Fill array with the correct pointers.
     for (int i = 0; i < SEGMENT_SIZE; ++i) {
-        pointers[i] = &(Cube::getInstance()->leds)[i + SEGMENT_SIZE * index];
+        pointers[i] = &leds[i + SEGMENT_SIZE * index];
     }
 
     return pointers;

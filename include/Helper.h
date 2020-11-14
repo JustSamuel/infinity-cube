@@ -3,4 +3,10 @@
 //
 #pragma once
 
+//Syntactic sugar
+#define leds Cube::getInstance()->ledArray
+
+/**
+ * Use to retrieve the relevant pointers for the segment at index int.
+ */
 CRGB** getSegmentFromIndex(int);

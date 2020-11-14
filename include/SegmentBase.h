@@ -4,7 +4,7 @@
 #pragma once
 
 /**
- * Base class for the Segment so that Segment arrays can be created.
+ * Base class for the Segment so that arrays of Segments can be created. (see Segment.h)
  */
 class SegmentBase {
     public:

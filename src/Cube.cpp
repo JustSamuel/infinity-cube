@@ -7,8 +7,8 @@
 Cube *Cube::instance = nullptr;
 
 Cube::Cube() {
-    leds = new CRGB[NUM_LEDS];
-    FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
+    ledArray = new CRGB[NUM_LEDS];
+    FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(ledArray, NUM_LEDS).setCorrection(TypicalLEDStrip);
     FastLED.setBrightness(BRIGHTNESS);
 }
 

@@ -4,18 +4,20 @@
 #pragma once
 
 /**
- * Singleton Cube class
+ * Singleton Cube class used as wrapper for Segments to represent the Cube.
  */
 class Cube {
+    // Singleton instance of this Cube.
     static Cube *instance;
 
-    void setDefaults();
-
+    // Private Constructor.
     Cube();
 
 public:
 
+    // Singleton constructor.
     static Cube *getInstance();
 
-    CRGB* leds;
+    // The LED array used by FastLED library.
+    CRGB* ledArray;
 };
