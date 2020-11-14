@@ -7,7 +7,7 @@
  * Singleton Cube class
  */
 class Cube {
-    Cube *instance;
+    static Cube *instance;
 
     void setDefaults();
 

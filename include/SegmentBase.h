@@ -8,9 +8,9 @@
  */
 class SegmentBase {
     public:
-        SegmentBase();
+        SegmentBase() = default;
 
-        virtual int getLength();
+        virtual int getLength() = 0;
 
-        virtual void setUniformCRGB(CRGB);
+        virtual void setUniformCRGB(CRGB) = 0;
 };

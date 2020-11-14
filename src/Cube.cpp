@@ -1,8 +1,9 @@
 //
 // Created by Samuel on 13/11/2020.
 //
+#pragma once
+#include "InfintyCube.h"
 
-#include "cube.h"
 Cube *Cube::instance = nullptr;
 
 Cube::Cube() {
