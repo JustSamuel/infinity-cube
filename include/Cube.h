@@ -3,6 +3,7 @@
 //
 #pragma once
 #include "SegmentBase.h"
+#include "Config.h"
 
 /**
  * Singleton Cube class used as wrapper for Segments to represent the Cube.

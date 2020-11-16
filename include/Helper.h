@@ -3,6 +3,7 @@
 //
 #pragma once
 #include "Cube.h"
+#include "Config.h"
 
 //Syntactic sugar
 #define leds Cube::getInstance()->ledArray

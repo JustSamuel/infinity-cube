@@ -2,23 +2,26 @@
 // Created by Samuel on 13/11/2020.
 //
 #pragma once
+#include "FastLED.h"
+#include "Helper.h"
 
 /**
  * Base class for the Segment so that arrays of Segments can be created. (see Segment.h)
  */
 class SegmentBase {
-        boolean reversed = false;
-
-        virtual int getIndex(int i) = 0;
-
+        bool reversed = false;
     public:
+        int indices[];
+
         SegmentBase() = default;
 
         virtual int getLength() = 0;
 
-        virtual void setUniformCRGB(CRGB) = 0;
+        void setUniformCRGB(CRGB);
 
-        virtual void reverse() = 0;
+        void reverse();
 
-        virtual void setCRGB(CRGB, int) = 0;
+        void setCRGB(CRGB, int);
+
+        int getIndex(int i);
 };
