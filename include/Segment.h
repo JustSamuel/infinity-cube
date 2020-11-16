@@ -3,6 +3,7 @@
 //
 #pragma once
 
+#include "Helper.h"
 #include "SegmentBase.h"
 
 /**
@@ -12,17 +13,25 @@
  * @tparam STRIP_LEN Amount of LEDS in the segment.
  */
 template<int STRIP_LEN>
-class Segment: public SegmentBase 
+class Segment: public SegmentBase
 {
+    // Reverses the Segment so the first index is the last.
+    boolean reversed = false;
+
+    /**
+     * @return the ith index in the array of the Segment.
+     */
+    int getIndex(int) override;
+
 public:
     // The pointers of the LEDS in the segment.
-    CRGB* array[STRIP_LEN];
+    int indices[STRIP_LEN];
 
     // Create a Segment without specifying the pointers.
     Segment(){};
 
     // Create a Segment by specifying the pointers.
-    Segment(CRGB* pointers[]);
+    Segment(int indices[]);
 
     /**
      * Give every LED in the Segment the same color.
@@ -31,17 +40,29 @@ public:
     void setUniformCRGB(CRGB) override;
 
     /**
+     * Give a single LED a CRGB color.
+     * @param CRGB the color to set.
+     * @param int the index of the LED.
+     */
+    void setCRGB(CRGB, int) override;
+
+    /**
+     * Reverses direction of indices.
+     */
+    void reverse() override;
+
+    /**
      * @return the amount of LEDS in this Segment
      */
     int getLength() override;
 };
 
 template<int STRIP_LEN>
-Segment<STRIP_LEN>::Segment(CRGB* pointers[])
+Segment<STRIP_LEN>::Segment(int ind[])
 {
     for (int i = 0; i < STRIP_LEN; ++i)
     {
-        array[i] = indices[i];
+        indices[i] = ind[i];
     }
 }
 
@@ -50,7 +71,7 @@ void Segment<STRIP_LEN>::setUniformCRGB(CRGB color)
 {
     for (int i = 0; i < STRIP_LEN; ++i)
     {
-        *(array[i]) = color;
+        leds[indices[i]] = color;
     }
 }
 
@@ -58,4 +79,25 @@ template<int STRIP_LEN>
 int Segment<STRIP_LEN>::getLength()
 {
     return STRIP_LEN;
+}
+
+template<int STRIP_LEN>
+int Segment<STRIP_LEN>::getIndex(int i)
+{
+    if (!reversed) {
+        return indices[i];
+    } else {
+        return indices[STRIP_LEN - i - 1];
+    }
+}
+
+template<int STRIP_LEN>
+void Segment<STRIP_LEN>::setCRGB(CRGB color, int i)
+{
+    leds[getIndex(i)] = color;
+}
+
+template<int STRIP_LEN>
+void Segment<STRIP_LEN>::reverse() {
+    reversed = !reversed;
 }
