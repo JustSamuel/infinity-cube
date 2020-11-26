@@ -12,6 +12,9 @@ class Cube {
     // Singleton instance of this Cube.
     static Cube *instance;
 
+    // Normalize directions of the segments strips.
+    const int TO_INVERT[12] = {0, 1, 4, 5, 8, 9, 12, 15, 16, 19, 20, 21};
+
     // Private Constructor.
     Cube();
 
@@ -21,7 +24,7 @@ public:
     SegmentBase* fullCube;
 
     // Every Segment of the cube in an array.
-    SegmentBase *strips[SEGMENT_COUNT];
+    SegmentBase *strips[SEGMENT_COUNT]{};
 
     // Singleton constructor.
     static Cube *getInstance();

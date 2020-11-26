@@ -23,12 +23,12 @@ public:
     Segment(){};
 
     // Create a Segment by specifying the pointers.
-    Segment(int indices[]);
+    explicit Segment(int indices[]);
 
     /**
      * @return the amount of LEDS in this Segment
      */
-    int getLength();
+    int getLength() override;
 };
 
 template<int STRIP_LEN>

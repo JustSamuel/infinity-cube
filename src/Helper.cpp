@@ -3,6 +3,7 @@
 //
 #pragma  once
 #include "InfintyCube.h"
+#include "Helper.h"
 
 /**
  * Returns an array of pointers on the heap for a index based segment. Intuitively the cube is split into 24 segments
@@ -22,3 +23,22 @@ int* getIndicesFromIndex(int index){
 
     return indices;
 }
+
+/**
+ * Show the current array, sleep to update the leds and then right full black to the cube.
+ * @param sleep time to wait
+ */
+void display(int sleep, bool clear){
+    FastLED.show();
+    delay(sleep);
+    if (clear) fCube->setUniformCRGB(CRGB::Black);
+}
+
+void shuffle(int array[], int length){
+    for (int i = length; i != 0; i--) {
+        int j = random(0, i);
+        int temp = array[j];
+        array[j] = array[i];
+        array[i] = temp;
+    }
+};

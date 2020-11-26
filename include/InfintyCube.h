@@ -12,3 +12,4 @@
 #include "SegmentBase.h"
 #include "Cube.h"
 #include "Helper.h"
+#include "Animation.h"
