@@ -28,7 +28,7 @@ Cube::Cube() {
 void Cube::defaults()
 {
     // Default is full black.
-    fullCube->setUniformCRGB(CRGB::Black);
+    fullCube->setUniformCRGB(CRGB::Red);
 
     // Set default directions
     for (auto & strip : strips) {
