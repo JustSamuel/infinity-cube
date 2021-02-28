@@ -5,6 +5,8 @@
 
 //System library
 #include <FastLED.h>
+#include "WiFi.h"
+#include "WiFiServer.h"
 
 //Project header files
 #include "Config.h"
@@ -13,4 +15,5 @@
 #include "Cube.h"
 #include "Helper.h"
 #include "Animation.h"
+#include "CServer.h"
 #include "../lib/WiFiConfig.h"

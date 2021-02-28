@@ -2,12 +2,10 @@
 // Created by Samuel on 28/02/2021.
 //
 
-#ifndef INFINITY_CUBE_WIFICONFIG_H
-#define INFINITY_CUBE_WIFICONFIG_H
+#pragma once
 
 #define SSID ""
 #define WiFiPassword ""
+#define ServerPort 23
 
 void ConnectToWiFi();
-
-#endif //INFINITY_CUBE_WIFICONFIG_H
