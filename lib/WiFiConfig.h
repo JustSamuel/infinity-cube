@@ -5,8 +5,8 @@
 #ifndef INFINITY_CUBE_WIFICONFIG_H
 #define INFINITY_CUBE_WIFICONFIG_H
 
-const char *SSID = "";
-const char *WiFiPassword = "";
+#define SSID ""
+#define WiFiPassword ""
 
 void ConnectToWiFi();
 

@@ -9,6 +9,7 @@ void setup() {
     Cube::getInstance()->defaults();
     display(10);
     currentAnimation = new TestAnimation(fCube);
+    ConnectToWiFi();
 }
 
 void loop() {

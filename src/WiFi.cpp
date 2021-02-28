@@ -5,7 +5,7 @@
 #pragma once
 
 #include "WiFi.h" // ESP32 WiFi include
-#include "WiFiConfig.h" // My WiFi configuration.
+#include "Config.h" // For credentials.
 
 void ConnectToWiFi() {
     WiFi.mode(WIFI_STA);
