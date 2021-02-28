@@ -8,4 +8,6 @@
 const char *SSID = "";
 const char *WiFiPassword = "";
 
+void ConnectToWiFi();
+
 #endif //INFINITY_CUBE_WIFICONFIG_H
