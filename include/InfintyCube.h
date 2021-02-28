@@ -13,3 +13,4 @@
 #include "Cube.h"
 #include "Helper.h"
 #include "Animation.h"
+#include "../lib/WiFiConfig.h"
