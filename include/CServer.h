@@ -4,6 +4,7 @@
 
 #pragma once
 #include "Config.h"
+#include "WiFiServer.h"
 
 /**
  * Singleton Server class containing WiFi logic.
@@ -28,4 +29,6 @@ public:
 
     // Singleton constructor.
     static CServer *getInstance();
+
+    void EchoReceivedData();
 };

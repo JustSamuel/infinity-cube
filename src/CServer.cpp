@@ -57,3 +57,14 @@ CServer *CServer::getInstance() {
     }
     return instance;
 }
+
+void CServer::EchoReceivedData() {
+    uint8_t ReceiveBuffer[30];
+    while (remoteClient.connected() && remoteClient.available()) {
+        int Received = remoteClient.read(ReceiveBuffer, sizeof(ReceiveBuffer));
+        for (int i = 0; i < Received; ++i) {
+            Serial.println(ReceiveBuffer[i]);
+        };
+        Serial.println();
+    }
+}
