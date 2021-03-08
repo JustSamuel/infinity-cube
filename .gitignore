@@ -1,4 +1,5 @@
 .pio
 CMakeListsPrivate.txt
+lib/WiFiConfig.h
 cmake-build-*/ 
 .idea

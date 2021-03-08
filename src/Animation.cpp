@@ -1,7 +1,6 @@
 //
 // Created by Samuel on 16/11/2020.
 //
-
 #pragma once
 
 #include "Animation.h"
