@@ -3,4 +3,4 @@
 //
 #pragma once
 
-#include "LedstripConfig.h"
+#include "CubeConfig.h"

@@ -13,7 +13,7 @@ void setup() {
 
 void loop() {
     currentAnimation -> draw();
-    CServer::getInstance() -> CheckForConnections();
-    CServer::getInstance() -> EchoReceivedData();
-    delay(500);
+//    CServer::getInstance() -> CheckForConnections();
+//    CServer::getInstance() -> EchoReceivedData();
+//    delay(500);
 }
