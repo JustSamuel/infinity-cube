@@ -10,7 +10,7 @@
  * Singleton Server class containing WiFi logic.
  */
 class CServer {
-    // Singleton instance of this Cube.
+    // Singleton instance of this CServer.
     static CServer *instance;
 
     WiFiServer* wifiServer;

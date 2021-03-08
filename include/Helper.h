@@ -2,12 +2,12 @@
 // Created by Samuel on 13/11/2020.
 //
 #pragma once
-#include "Cube.h"
+#include "LEDController.h"
 #include "Config.h"
 
 //Syntactic sugar
-#define leds Cube::getInstance()->ledArray
-#define fCube Cube::getInstance()->fullCube
+#define leds LEDController::getInstance()->ledArray
+#define fCube LEDController::getInstance()->fullCube
 #define fStrips Cube::getInstance()->strips
 
 /**

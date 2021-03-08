@@ -4,9 +4,9 @@
 #pragma once
 #include "InfintyCube.h"
 
-Cube *Cube::instance = nullptr;
+LEDController *LEDController::instance = nullptr;
 
-Cube::Cube() {
+LEDController::LEDController() {
     ledArray = new CRGB[NUM_LEDS];
     FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(ledArray, NUM_LEDS).setCorrection(TypicalLEDStrip);
     FastLED.setBrightness(BRIGHTNESS);
@@ -25,7 +25,7 @@ Cube::Cube() {
     }
 }
 
-void Cube::defaults()
+void LEDController::defaults()
 {
     // Default is full black.
     fullCube->setUniformCRGB(CRGB::Red);
@@ -40,9 +40,9 @@ void Cube::defaults()
     }
 }
 
-Cube *Cube::getInstance() {
+LEDController *LEDController::getInstance() {
     if (!instance) {
-        instance = new Cube();
+        instance = new LEDController();
     }
     return instance;
 }

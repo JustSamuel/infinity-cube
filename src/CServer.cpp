@@ -62,6 +62,7 @@ void CServer::EchoReceivedData() {
     uint8_t ReceiveBuffer[30];
     while (remoteClient.connected() && remoteClient.available()) {
         int Received = remoteClient.read(ReceiveBuffer, sizeof(ReceiveBuffer));
+        remoteClient.write(Received);
         for (int i = 0; i < Received; ++i) {
             Serial.println(ReceiveBuffer[i]);
         };

@@ -6,10 +6,8 @@
 #include "Animation.h"
 
 void TestAnimation::draw() {
-//    target -> setUniformCRGB(CRGB::Purple);
-//    display(5, false);
     if (step < target->getLength()) {
-        target->setCRGB(currentColor, step);
+        target->drawGradientRange(CHSV(0, 255, 0), rgb2hsv_approximate(currentColor), 0, step + 1);
         hsv2rgb_rainbow(CHSV(animation, 200, 200), currentColor);
         display(5, false);
         step++;

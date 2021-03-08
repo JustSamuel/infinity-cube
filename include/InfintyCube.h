@@ -12,7 +12,7 @@
 #include "Config.h"
 #include "Segment.h"
 #include "SegmentBase.h"
-#include "Cube.h"
+#include "LEDController.h"
 #include "Helper.h"
 #include "Animation.h"
 #include "CServer.h"

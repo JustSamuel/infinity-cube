@@ -6,17 +6,17 @@
 #include "Config.h"
 
 /**
- * Singleton Cube class used as wrapper for Segments to represent the Cube.
+ * Singleton LEDController class used as wrapper for Segments to represent the LEDController.
  */
-class Cube {
-    // Singleton instance of this Cube.
-    static Cube *instance;
+class LEDController {
+    // Singleton instance of this LEDController.
+    static LEDController *instance;
 
     // Normalize directions of the segments strips.
     const int TO_INVERT[12] = {0, 1, 4, 5, 8, 9, 12, 15, 16, 19, 20, 21};
 
     // Private Constructor.
-    Cube();
+    LEDController();
 
 public:
 
@@ -27,9 +27,9 @@ public:
     SegmentBase *strips[SEGMENT_COUNT]{};
 
     // Singleton constructor.
-    static Cube *getInstance();
+    static LEDController *getInstance();
 
-    // Returns the Cube to the default pre-defined states.
+    // Returns the LEDController to the default pre-defined states.
     void defaults();
 
     // The LED array used by FastLED library.

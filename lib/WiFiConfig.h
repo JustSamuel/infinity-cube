@@ -4,8 +4,6 @@
 
 #pragma once
 
-#define SSID ""
-#define WiFiPassword ""
+#define SSID "Ranonkelstraat65"
+#define WiFiPassword "Ranonkeltje3.0"
 #define ServerPort 23
-
-void ConnectToWiFi();
