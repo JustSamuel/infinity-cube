@@ -87,7 +87,9 @@ void SegmentBase::drawRange(const CRGB& color, int start, int length, bool wrap)
 void SegmentBase::drawGradientRange(CHSV startcolor, CHSV endcolor, int start, int length) {
     // Length 1 is the same as setting a light.
     if (length == 1) {
-        setCRGB(endcolor, start);
+        CRGB color = (* (new CRGB()));
+        hsv2rgb_rainbow(endcolor, color);
+        setCRGB(color, start);
         return;
     }
 

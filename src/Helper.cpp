@@ -27,6 +27,7 @@ int* getIndicesFromIndex(int index){
 /**
  * Show the current array, sleep to update the leds and then right full black to the cube.
  * @param sleep time to wait
+ * @param clear whether to make all leds black or not.
  */
 void display(int sleep, bool clear){
     FastLED.show();
@@ -42,3 +43,9 @@ void shuffle(int array[], int length){
         array[i] = temp;
     }
 };
+
+void intToRGB(int array[], int color) {
+    array[0] = (color & 0xFF0000) >> 16;
+    array[1] = (color & 0xFF00) >> 8;
+    array[2] = (color & 0xFF);
+}

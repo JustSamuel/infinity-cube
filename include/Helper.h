@@ -26,3 +26,10 @@ void display(int sleep, bool clear = true);
  * @param array to shuffle.
  */
 void shuffle(int array[], int length);
+
+/**
+ * Parses an integer value to an rgb array.
+ * @param array The target array.
+ * @param color The integer representation of the color.
+ */
+void intToRGB(int array[], int color);

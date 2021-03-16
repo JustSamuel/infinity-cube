@@ -3,6 +3,7 @@
 //
 #pragma once
 #include "InfintyCube.h"
+#include "Helper.h"
 
 LEDController *LEDController::instance = nullptr;
 
@@ -37,6 +38,25 @@ void LEDController::defaults()
 
     for (int j = 0; j < 12; ++j) {
 //        strips[TO_INVERT[j]] -> setReversed(true);
+    }
+}
+
+
+// TODO make it able to parse strings.
+void LEDController::parseCommand(int command, int color[]) {
+    switch (command) {
+        case 0:
+            doAnimation = false;
+            display(10, true);
+            break;
+        case 1:
+            doAnimation = true;
+            currentAnimation = new TestAnimation(fCube);
+            break;
+        case 2:
+            fCube->setUniformCRGB(CRGB(color[0],color[1],color[2]));
+            display(10, false);
+            break;
     }
 }
 

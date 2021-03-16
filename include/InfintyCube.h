@@ -5,6 +5,7 @@
 
 //System library
 #include <FastLED.h>
+#include <ArduinoJson.h>
 #include "WiFi.h"
 #include "WiFiServer.h"
 

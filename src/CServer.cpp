@@ -10,12 +10,21 @@
 CServer *CServer::instance = nullptr;
 
 CServer::CServer() {
-    ConnectToWiFi();
+    connectToWiFi();
     wifiServer = new WiFiServer(ServerPort);
     wifiServer->begin();
+
+    xTaskCreatePinnedToCore(
+            CServer::wifiLoop, /* Function to implement the task */
+            "WiFiLoop", /* Name of the task */
+            10000,  /* Stack size in words */
+            NULL,  /* Task input parameter */
+            0,  /* Priority of the task */
+            &wifiLoopTask,  /* Task handle. */
+            0); /* Core where the task should run */
 }
 
-void CServer::CheckForConnections() {
+void CServer::checkForConnections() {
     if (wifiServer->hasClient()) {
         // If we are already connected to another computer,
         // then reject the new connection. Otherwise accept
@@ -30,7 +39,7 @@ void CServer::CheckForConnections() {
     }
 }
 
-void CServer::ConnectToWiFi() {
+void CServer::connectToWiFi() {
     WiFi.mode(WIFI_STA);
     WiFi.begin(SSID, WiFiPassword);
     Serial.print("Connecting to ");
@@ -58,14 +67,34 @@ CServer *CServer::getInstance() {
     return instance;
 }
 
-void CServer::EchoReceivedData() {
-    uint8_t ReceiveBuffer[30];
+DynamicJsonDocument doc(1024);
+
+void CServer::echoReceivedData() {
+    uint8_t ReceiveBuffer[1024];
+    int color[2];
     while (remoteClient.connected() && remoteClient.available()) {
-        int Received = remoteClient.read(ReceiveBuffer, sizeof(ReceiveBuffer));
-        remoteClient.write(Received);
-        for (int i = 0; i < Received; ++i) {
-            Serial.println(ReceiveBuffer[i]);
-        };
-        Serial.println();
+        int received = remoteClient.read(ReceiveBuffer, sizeof(ReceiveBuffer));
+        char* data = new char[received];
+        data[received] = NULL;
+
+        for (int i = 0; i < received; ++i) {
+            char charValue = ReceiveBuffer[i];
+            data[i] = charValue;
+        }
+
+        deserializeJson(doc, data);
+
+        int animationId = doc["animationId"];
+        intToRGB(color, doc["color"]);
+
+        LEDController::getInstance() -> parseCommand(animationId, color);
+    }
+}
+
+[[noreturn]] void CServer::wifiLoop(void * parameter) {
+    for(;;) {
+        CServer::getInstance()->checkForConnections();
+        CServer::getInstance()->echoReceivedData();
+        delay(1);
     }
 }

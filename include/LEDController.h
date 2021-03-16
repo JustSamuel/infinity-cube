@@ -5,6 +5,9 @@
 #include "SegmentBase.h"
 #include "Config.h"
 
+// Forward declaration to prevent cyclic dependency.
+class Animation;
+
 /**
  * Singleton LEDController class used as wrapper for Segments to represent the LEDController.
  */
@@ -20,10 +23,10 @@ class LEDController {
 
 public:
 
-    // All the leds in the cube as a single segment.
+    // All the leds in the controller as a single segment.
     SegmentBase* fullCube;
 
-    // Every Segment of the cube in an array.
+    // Every Segment of the controller in an array.
     SegmentBase *strips[SEGMENT_COUNT]{};
 
     // Singleton constructor.
@@ -31,6 +34,15 @@ public:
 
     // Returns the LEDController to the default pre-defined states.
     void defaults();
+
+    // Parses string commands.
+    void parseCommand(int command, int color[]);
+
+    // Toggles the animation on or off.
+    boolean doAnimation = true;
+
+    // Current animation running on the controller.
+    Animation* currentAnimation;
 
     // The LED array used by FastLED library.
     CRGB* ledArray;

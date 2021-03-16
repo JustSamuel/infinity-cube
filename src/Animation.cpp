@@ -18,3 +18,4 @@ void TestAnimation::draw() {
         display(100, false);
     }
 }
+

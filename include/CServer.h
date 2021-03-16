@@ -17,18 +17,22 @@ class CServer {
 
     WiFiClient remoteClient;
 
+    TaskHandle_t wifiLoopTask;
+
     // Private Constructor.
     CServer();
 
 public:
 
-    void CheckForConnections();
+    void checkForConnections();
 
     // Connects to WiFi.
-    void ConnectToWiFi();
+    void connectToWiFi();
 
     // Singleton constructor.
     static CServer *getInstance();
 
-    void EchoReceivedData();
+    void echoReceivedData();
+
+    [[noreturn]] static void wifiLoop(void * parameter);
 };

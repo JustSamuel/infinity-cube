@@ -6,14 +6,16 @@ Animation* currentAnimation;
 void setup() {
     delay(3000);
     Serial.begin(115200);
+
     LEDController::getInstance()->defaults();
-    display(10);
-    currentAnimation = new TestAnimation(fCube);
-}
+    LEDController::getInstance() -> currentAnimation = new TestAnimation(fCube);
+    CServer::getInstance();
+
+    srand(time(0));
+    display(10);}
 
 void loop() {
-    currentAnimation -> draw();
-//    CServer::getInstance() -> CheckForConnections();
-//    CServer::getInstance() -> EchoReceivedData();
-//    delay(500);
+    if (LEDController::getInstance() -> doAnimation) {
+        LEDController::getInstance() -> currentAnimation -> draw();
+    }
 }
