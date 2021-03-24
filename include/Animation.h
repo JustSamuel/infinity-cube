@@ -2,28 +2,33 @@
 // Created by Samuel on 16/11/2020.
 //
 #pragma once
+
 #include "InfintyCube.h"
 
 /**
  * Abstract class for describing Animations.
  */
-class Animation
-{
+class Animation {
 protected:
 // Every Animation has a Segment as target.
-SegmentBase* target;
+    SegmentBase *target;
 public:
 
     // Construct an Animation by setting the target.
-    explicit Animation(SegmentBase* target){
-        this -> target = target;
+    explicit Animation(SegmentBase *target) {
+        this->target = target;
     }
 
     // Draw is used to display the animation.
     virtual void draw() = 0;
 };
 
-class TestAnimation: public Animation{
+/**
+ * Example implementation of the Abstract Animation class.
+ *
+ * Pulse going from left to right, changing color on reaching the edge.
+ */
+class TestAnimation : public Animation {
 public:
     explicit TestAnimation(SegmentBase *target) : Animation(target) {}
 
@@ -36,6 +41,22 @@ public:
     int step = 0;
 
     int sat = 100;
+
+    CRGB currentColor = CRGB::Red;
+};
+
+class GitLabAnimation : public Animation {
+public:
+    explicit GitLabAnimation(SegmentBase *target, CRGB currentColor, int pulseCount) : Animation(target) {
+        this->currentColor = currentColor;
+        this->pulseCount = pulseCount;
+    }
+
+    void draw() override;
+
+    double speed = 0.1;
+
+    int pulseCount = 5;
 
     CRGB currentColor = CRGB::Red;
 };

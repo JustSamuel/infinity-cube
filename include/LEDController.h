@@ -36,7 +36,7 @@ public:
     void defaults();
 
     // Parses string commands.
-    void parseCommand(int command, int color[]);
+    void parseCommand(int command, int color[], int params[]);
 
     // Toggles the animation on or off.
     boolean doAnimation = true;

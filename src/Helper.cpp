@@ -30,9 +30,9 @@ int* getIndicesFromIndex(int index){
  * @param clear whether to make all leds black or not.
  */
 void display(int sleep, bool clear){
+    if (clear) fCube->setUniformCRGB(CRGB::Black);
     FastLED.show();
     delay(sleep);
-    if (clear) fCube->setUniformCRGB(CRGB::Black);
 }
 
 void shuffle(int array[], int length){
@@ -42,10 +42,15 @@ void shuffle(int array[], int length){
         array[j] = array[i];
         array[i] = temp;
     }
-};
+}
 
-void intToRGB(int array[], int color) {
+void intToRGB(int* array, int color) {
     array[0] = (color & 0xFF0000) >> 16;
     array[1] = (color & 0xFF00) >> 8;
     array[2] = (color & 0xFF);
+}
+
+double getGaussianValue(int x, double a, double b, double c) {
+    double factor = a * exp(-1 * (pow((x - b), 2) / (2 * pow(c, 2))));
+    return factor;
 }

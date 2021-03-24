@@ -33,6 +33,9 @@ class SegmentBase {
          */
         void setReversed(bool);
 
+        /**
+         * Reverse the segment.
+         */
         void reverse();
 
         /**
@@ -41,6 +44,11 @@ class SegmentBase {
          * @param int Index of LED.
          */
         void setCRGB(const CRGB&, int);
+
+        /**
+         * Draw to the led using a Gaussian distribution for a 'glowing' feel.
+         */
+        void drawGaussian(const CRGB&, double a, double b, double c);
 
         /**
          * Draw a color over a range of indices.

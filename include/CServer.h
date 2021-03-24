@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include <ArduinoJson.h>
 #include "Config.h"
 #include "WiFiServer.h"
 
@@ -13,26 +14,35 @@ class CServer {
     // Singleton instance of this CServer.
     static CServer *instance;
 
+    // Connecting to the WiFi.
     WiFiServer* wifiServer;
 
+    // The connected client.
     WiFiClient remoteClient;
 
-    TaskHandle_t wifiLoopTask;
+    // For multiprocessing.
+    TaskHandle_t wifiLoopTask{};
+
+    // JSON input data.
+    DynamicJsonDocument* dataInput;
 
     // Private Constructor.
     CServer();
 
 public:
 
+    // Checks and connects to any clients.
     void checkForConnections();
 
     // Connects to WiFi.
-    void connectToWiFi();
+    static void connectToWiFi();
 
     // Singleton constructor.
     static CServer *getInstance();
 
-    void echoReceivedData();
+    // Parses data
+    void getData();
 
+    // WiFi Loop thread
     [[noreturn]] static void wifiLoop(void * parameter);
 };

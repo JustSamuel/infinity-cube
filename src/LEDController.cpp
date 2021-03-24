@@ -9,7 +9,7 @@ LEDController *LEDController::instance = nullptr;
 
 LEDController::LEDController() {
     ledArray = new CRGB[NUM_LEDS];
-    FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(ledArray, NUM_LEDS).setCorrection(TypicalLEDStrip);
+    CFastLED::addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(ledArray, NUM_LEDS).setCorrection(TypicalLEDStrip);
     FastLED.setBrightness(BRIGHTNESS);
 
     int indices[NUM_LEDS];
@@ -41,9 +41,7 @@ void LEDController::defaults()
     }
 }
 
-
-// TODO make it able to parse strings.
-void LEDController::parseCommand(int command, int color[]) {
+void LEDController::parseCommand(int command, int* color, int params[]) {
     switch (command) {
         case 0:
             doAnimation = false;
@@ -54,7 +52,9 @@ void LEDController::parseCommand(int command, int color[]) {
             currentAnimation = new TestAnimation(fCube);
             break;
         case 2:
-            fCube->setUniformCRGB(CRGB(color[0],color[1],color[2]));
+            doAnimation = false;
+            CRGB currentColor = CRGB(color[0],color[1],color[2]);
+            GitLabAnimation(fCube, currentColor, params[0]).draw();
             display(10, false);
             break;
     }

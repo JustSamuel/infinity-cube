@@ -31,6 +31,11 @@ public:
     int getLength() override;
 };
 
+/**
+ * Creates a segment using the provided indici.
+ * @tparam STRIP_LEN
+ * @param ind
+ */
 template<int STRIP_LEN>
 Segment<STRIP_LEN>::Segment(int ind[])
 {
@@ -40,6 +45,11 @@ Segment<STRIP_LEN>::Segment(int ind[])
     }
 }
 
+/**
+ * Returns the template parameter.
+ * @tparam STRIP_LEN
+ * @return STRIP_LEN
+ */
 template<int STRIP_LEN>
 int Segment<STRIP_LEN>::getLength()
 {
