@@ -2,6 +2,8 @@
 // Created by Samuel on 13/11/2020.
 //
 #pragma once
+
+#include <LEDController.h>
 #include "InfintyCube.h"
 #include "Helper.h"
 
@@ -41,11 +43,11 @@ void LEDController::defaults()
     }
 }
 
-void LEDController::parseCommand(int command, int* color, int params[]) {
-    switch (command) {
+
+void LEDController::parseCommand() {
+    switch (currentCommand -> animationId) {
         case 0:
             doAnimation = false;
-            display(10, true);
             break;
         case 1:
             doAnimation = true;
@@ -53,9 +55,12 @@ void LEDController::parseCommand(int command, int* color, int params[]) {
             break;
         case 2:
             doAnimation = false;
-            CRGB currentColor = CRGB(color[0],color[1],color[2]);
-            GitLabAnimation(fCube, currentColor, params[0]).draw();
-            display(10, false);
+            GitLabAnimation(fCube, currentCommand -> color, currentCommand-> changes).draw();
+            break;
+        case 3:
+            fCube->drawGaussian(&currentCommand-> color, 1, fCube->getLength()*currentCommand-> xfloat, currentCommand -> height);
+            break;
+        default:
             break;
     }
 }

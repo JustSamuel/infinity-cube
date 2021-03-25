@@ -2,6 +2,8 @@
 // Created by Samuel on 13/11/2020.
 //
 #pragma once
+#include <ArduinoJson.h>
+#include "AnimationCommand.h"
 #include "SegmentBase.h"
 #include "Config.h"
 
@@ -22,6 +24,8 @@ class LEDController {
     LEDController();
 
 public:
+    // Singleton constructor.
+    static LEDController *getInstance();
 
     // All the leds in the controller as a single segment.
     SegmentBase* fullCube;
@@ -29,21 +33,21 @@ public:
     // Every Segment of the controller in an array.
     SegmentBase *strips[SEGMENT_COUNT]{};
 
-    // Singleton constructor.
-    static LEDController *getInstance();
-
     // Returns the LEDController to the default pre-defined states.
     void defaults();
 
     // Parses string commands.
-    void parseCommand(int command, int color[], int params[]);
+    void parseCommand();
 
     // Toggles the animation on or off.
     boolean doAnimation = true;
 
     // Current animation running on the controller.
-    Animation* currentAnimation;
+    Animation* currentAnimation = nullptr;
 
     // The LED array used by FastLED library.
     CRGB* ledArray;
+
+    // Current params.
+    AnimationCommand *currentCommand = new AnimationCommand();
 };

@@ -4,8 +4,9 @@
 #pragma once
 
 #include <CServer.h>
-
+#define ARDUINOJSON_USE_DOUBLE 0
 #include "InfintyCube.h"
+#include "AnimationCommand.h"
 
 CServer *CServer::instance = nullptr;
 
@@ -15,8 +16,7 @@ CServer::CServer() {
     wifiServer = new WiFiServer(ServerPort);
     wifiServer->begin();
 
-    // Create on stack.
-    dataInput = new DynamicJsonDocument(1024);
+    currentCommand = LEDController::getInstance() -> currentCommand;
 
     xTaskCreatePinnedToCore(
             CServer::wifiLoop,      /* Function to implement the task */
@@ -72,13 +72,10 @@ CServer *CServer::getInstance() {
 }
 
 void CServer::getData() {
-    uint8_t ReceiveBuffer[1024];
-    int color[3];
-    int params[5];
-
+    uint8_t ReceiveBuffer[JSON_PAYLOAD_SIZE];
     while (remoteClient.connected() && remoteClient.available()) {
         int received = remoteClient.read(ReceiveBuffer, sizeof(ReceiveBuffer));
-        char *data = new char[received];
+        char data[received];
         data[received] = '\0';
 
         for (int i = 0; i < received; ++i) {
@@ -87,28 +84,41 @@ void CServer::getData() {
         }
 
         // Send what we received back.
-        remoteClient.write(data);
+        remoteClient.write('0');
 
-        deserializeJson(*dataInput, data);
+        // Deserialize the JSON.
+        DynamicJsonDocument dataInput(JSON_PAYLOAD_SIZE);
 
-        // What animation to set.
-        int animationId = (*dataInput)["animationId"];
-
-        // Get color out of JSON.
-        intToRGB(color, (*dataInput)["color"]);
-
-        // Param objects allow us to encode extra parameters.
-        params[0] = (*dataInput)["changes"];
-
-        // Parse the command
-        LEDController::getInstance()->parseCommand(animationId, color, params);
+        DeserializationError error = deserializeJson(dataInput, data);
+        if (!error) {
+            parseJSON(currentCommand, &dataInput);
+            LEDController::getInstance() -> parseCommand();
+        }
     }
 }
+
+void CServer::parseJSON(AnimationCommand *inputCommand, DynamicJsonDocument *dataInput) {
+    inputCommand->animationId = (*dataInput)["animationId"].as<int>();
+
+    int colorInt = (*dataInput)["color"].as<int>();
+    if (colorInt) {
+        int color[3];
+        intToRGB(color, colorInt);
+        inputCommand->color = CRGB(color[0], color[1], color[2]);
+    }
+
+    inputCommand->changes = (*dataInput)["changes"].as<int>();
+
+    inputCommand->height = (*dataInput)["height"].as<double>();
+
+    inputCommand->xfloat = (*dataInput)["xfloat"].as<double>();
+}
+
 
 [[noreturn]] void CServer::wifiLoop(void *parameter) {
     for (;;) {
         CServer::getInstance()->checkForConnections();
         CServer::getInstance()->getData();
-        delay(1);
+        delay(20);
     }
 }

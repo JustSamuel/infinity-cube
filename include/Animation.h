@@ -45,6 +45,7 @@ public:
     CRGB currentColor = CRGB::Red;
 };
 
+
 class GitLabAnimation : public Animation {
 public:
     explicit GitLabAnimation(SegmentBase *target, CRGB currentColor, int pulseCount) : Animation(target) {
@@ -57,6 +58,24 @@ public:
     double speed = 0.1;
 
     int pulseCount = 5;
+
+    CRGB currentColor = CRGB::Red;
+};
+
+
+class LeapAnimation : public Animation {
+public:
+    explicit LeapAnimation(SegmentBase *target, CRGB currentColor, double height, double xOffset) : Animation(target) {
+        this->height = height;
+        this->currentColor = currentColor;
+        this->xOffset = xOffset;
+    }
+
+    void draw() override;
+
+    double height = 0;
+
+    double xOffset = 0;
 
     CRGB currentColor = CRGB::Red;
 };

@@ -30,7 +30,10 @@ int* getIndicesFromIndex(int index){
  * @param clear whether to make all leds black or not.
  */
 void display(int sleep, bool clear){
-    if (clear) fCube->setUniformCRGB(CRGB::Black);
+    if (clear) {
+        Serial.println("CLEAR");
+        fCube->setUniformCRGB(CRGB::Black);
+    }
     FastLED.show();
     delay(sleep);
 }

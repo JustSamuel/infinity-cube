@@ -1,23 +1,11 @@
 //
-// Created by Samuel on 16/11/2020.
+// Created by Samuel on 25/03/2021.
 //
+
 #pragma once
 
 #include "Animation.h"
 
-void TestAnimation::draw() {
-    if (step < target->getLength()) {
-        target->drawGradientRange(CHSV(0, 255, 0), rgb2hsv_approximate(currentColor), 0, step + 1);
-        hsv2rgb_rainbow(CHSV(animation, 200, 200), currentColor);
-        display(5, false);
-        step++;
-    } else {
-        animation = (animation + 30) % 255;
-        step = 0;
-        target->reverse();
-        display(100, false);
-    }
-}
 
 void GitLabAnimation::draw() {
     // Amount of times we go from side to side
@@ -42,7 +30,7 @@ void GitLabAnimation::draw() {
             }
 
             // Draw all the LEDs according to a gaussian function.
-            target->drawGaussian(currentColor, 1, index, max(1, pulseCount));
+            target->drawGaussian(&currentColor, 1, index, max(1, pulseCount));
 
             // Update using step seed.
             index = index + speed * pulseCount;

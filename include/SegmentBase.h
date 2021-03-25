@@ -48,7 +48,7 @@ class SegmentBase {
         /**
          * Draw to the led using a Gaussian distribution for a 'glowing' feel.
          */
-        void drawGaussian(const CRGB&, double a, double b, double c);
+        void drawGaussian(CRGB *, double a, double b, double c);
 
         /**
          * Draw a color over a range of indices.
