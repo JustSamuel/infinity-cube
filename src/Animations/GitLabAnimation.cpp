@@ -30,7 +30,7 @@ void GitLabAnimation::draw() {
             }
 
             // Draw all the LEDs according to a gaussian function.
-            target->drawGaussian(&currentColor, 1, index, max(1, pulseCount));
+//            target->drawGaussian(&currentColor, 1, index, max(1, pulseCount));
 
             // Update using step seed.
             index = index + speed * pulseCount;

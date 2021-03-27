@@ -2,14 +2,27 @@
 #include "InfintyCube.h"
 
 void setup() {
+    // Failsafe
     delay(3000);
     Serial.begin(115200);
 
-    LEDController::getInstance() -> currentAnimation = new TestAnimation(fCube);
+    // Initialize the controller to defaults.
+    LEDController::getInstance()->defaults();
+
+    // Also initializes the WiFiServer.
     CServer::getInstance();
+
+    // Clear the LEDStrip.
     display(10);
 }
 
 void loop() {
-    display(20, false);
+//    // Get pointer to the current command.
+//    AnimationCommand *current = LEDController::getInstance() -> currentCommand;
+//
+//    // Read params from the command
+//    fCube->setCRGB(current->color, (int)(fCube->getLength() * current->xfloat));
+
+    // Display + delay(10)
+//    display(10, false);
 }

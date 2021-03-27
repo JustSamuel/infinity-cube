@@ -111,16 +111,16 @@ void SegmentBase::drawGradientRange(CHSV startcolor, CHSV endcolor, int start, i
  * @param b The curve offset
  * @param c The variance
  */
-void SegmentBase::drawGaussian(CRGB *color, double a, double b, double c) {
-    CRGB temp = CRGB(*color);
+void SegmentBase::drawGaussian(CRGB &color, double a, double  b, double c) {
+    CRGB temp = CRGB(color);
     for (int i = 0; i < getLength(); ++i) {
         double factor;
         factor = getGaussianValue(i, a, b, c);
 
         // Multiply by factor.
-        temp.r = color->r * factor;
-        temp.g = color->g * factor;
-        temp.b = color->b * factor;
+        temp.r = color.r * factor;
+        temp.g = color.g * factor;
+        temp.b = color.b * factor;
 
         setCRGB(temp, i);
     }

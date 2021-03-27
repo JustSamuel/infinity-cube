@@ -25,15 +25,12 @@ int* getIndicesFromIndex(int index){
 }
 
 /**
- * Show the current array, sleep to update the leds and then right full black to the cube.
+ * Show the current array, sleep to update the leds and then write full black to the cube.
  * @param sleep time to wait
  * @param clear whether to make all leds black or not.
  */
 void display(int sleep, bool clear){
-    if (clear) {
-        Serial.println("CLEAR");
-        fCube->setUniformCRGB(CRGB::Black);
-    }
+    if (clear) fCube->setUniformCRGB(CRGB::Black);
     FastLED.show();
     delay(sleep);
 }

@@ -14,6 +14,9 @@ LEDController::LEDController() {
     CFastLED::addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(ledArray, NUM_LEDS).setCorrection(TypicalLEDStrip);
     FastLED.setBrightness(BRIGHTNESS);
 
+    currentCommand = new AnimationCommand();
+    vPortCPUInitializeMutex(&mmux);
+
     int indices[NUM_LEDS];
     for (int i = 0; i < NUM_LEDS; ++i) {
         indices[i] = i;
@@ -22,20 +25,31 @@ LEDController::LEDController() {
     fullCube = new Segment<NUM_LEDS>(indices);
 
     for (int i = 0; i < SEGMENT_COUNT; ++i) {
-        int* fromIndex = getIndicesFromIndex(i);
+        int *fromIndex = getIndicesFromIndex(i);
         strips[i] = new Segment<SEGMENT_SIZE>(fromIndex);
         delete[] fromIndex;
     }
+
+//    xMutexA = xSemaphoreCreateMutex();
+    TaskHandle_t taskHandle;
+
+    xTaskCreatePinnedToCore(
+            LEDController::testBench,      /* Function to implement the task */
+            "testBench",     /* Name of the task */
+            10000,      /* Stack size in words */
+            nullptr,    /* Task input parameter */
+            1,             /* Priority of the task */
+            &taskHandle,          /* Task handle. */
+            1);             /* Core where the task should run */
 }
 
-void LEDController::defaults()
-{
+void LEDController::defaults() {
     // Default is full black.
     fullCube->setUniformCRGB(CRGB::Red);
 
     // Set default directions
-    for (auto & strip : strips) {
-        strip -> setReversed(false);
+    for (auto &strip : strips) {
+        strip->setReversed(false);
     }
 
     for (int j = 0; j < 12; ++j) {
@@ -43,9 +57,33 @@ void LEDController::defaults()
     }
 }
 
+volatile  int animationCount = 0;
+
+[[noreturn]] void LEDController::testBench(void * parameter) {
+    for(;;) {
+        animationCount++;
+        CRGB color = CRGB(LEDController::getInstance()->currentCommand->color.r,
+                          LEDController::getInstance()->currentCommand->color.g,
+                          LEDController::getInstance()->currentCommand->color.b);
+        double x = fCube->getLength() * LEDController::getInstance()->currentCommand->xfloat;
+        double height = LEDController::getInstance()->currentCommand->height;
+
+        fCube->drawGaussian(color, 1, x, height);
+
+        display(10, false);
+        if ((animationCount % 100) == 0) {
+            Serial.print("Parsed animation frame: ");
+            Serial.print(animationCount);
+            Serial.print(" : ");
+            Serial.println(micros());
+        }
+
+        delay(10);
+    }
+}
 
 void LEDController::parseCommand() {
-    switch (currentCommand -> animationId) {
+    switch (currentCommand->animationId) {
         case 0:
             doAnimation = false;
             break;
@@ -55,14 +93,16 @@ void LEDController::parseCommand() {
             break;
         case 2:
             doAnimation = false;
-            GitLabAnimation(fCube, currentCommand -> color, currentCommand-> changes).draw();
+//            GitLabAnimation(fCube, currentCommand->color, currentCommand->changes).draw();
             break;
         case 3:
-            fCube->drawGaussian(&currentCommand-> color, 1, fCube->getLength()*currentCommand-> xfloat, currentCommand -> height);
+//            fCube->drawGaussian(&currentCommand->color, 1, fCube->getLength() * currentCommand->xfloat,
+//                                currentCommand->height);
             break;
         default:
             break;
     }
+    display(10, false);
 }
 
 LEDController *LEDController::getInstance() {

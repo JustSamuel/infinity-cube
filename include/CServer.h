@@ -27,9 +27,6 @@ class CServer {
 
     static void parseJSON(AnimationCommand *inputCommand, DynamicJsonDocument *dataInput);
 
-    // Current params.
-    AnimationCommand *currentCommand;
-
     // Private Constructor.
     CServer();
 

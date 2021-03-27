@@ -16,14 +16,12 @@ CServer::CServer() {
     wifiServer = new WiFiServer(ServerPort);
     wifiServer->begin();
 
-    currentCommand = LEDController::getInstance() -> currentCommand;
-
     xTaskCreatePinnedToCore(
             CServer::wifiLoop,      /* Function to implement the task */
             "WiFiLoop",     /* Name of the task */
             10000,      /* Stack size in words */
-            nullptr,       /* Task input parameter */
-            0,             /* Priority of the task */
+            nullptr,    /* Task input parameter */
+            1,             /* Priority of the task */
             &wifiLoopTask,          /* Task handle. */
             0);             /* Core where the task should run */
 }
@@ -71,10 +69,26 @@ CServer *CServer::getInstance() {
     return instance;
 }
 
+bool firstPass = true;
+
+/**
+ * Receive the JSON and parse it using a DynamicJsonDocument.
+ * After parsing update the command in the controller.
+ */
 void CServer::getData() {
     uint8_t ReceiveBuffer[JSON_PAYLOAD_SIZE];
+    // Whilst there is data...
     while (remoteClient.connected() && remoteClient.available()) {
+        if (firstPass) {
+            Serial.print("First input received at");
+            Serial.println(micros());
+            firstPass = false;
+        }
+
+        //...read data.
         int received = remoteClient.read(ReceiveBuffer, sizeof(ReceiveBuffer));
+
+        // Turn it into a string.
         char data[received];
         data[received] = '\0';
 
@@ -86,13 +100,15 @@ void CServer::getData() {
         // Send what we received back.
         remoteClient.write('0');
 
-        // Deserialize the JSON.
+        // Create JSON object.
         DynamicJsonDocument dataInput(JSON_PAYLOAD_SIZE);
 
+        // Parse the input JSON.
         DeserializationError error = deserializeJson(dataInput, data);
+
+        // Send to LEDController.
         if (!error) {
-            parseJSON(currentCommand, &dataInput);
-            LEDController::getInstance() -> parseCommand();
+            parseJSON(LEDController::getInstance() -> currentCommand, &dataInput);
         }
     }
 }
@@ -104,7 +120,9 @@ void CServer::parseJSON(AnimationCommand *inputCommand, DynamicJsonDocument *dat
     if (colorInt) {
         int color[3];
         intToRGB(color, colorInt);
-        inputCommand->color = CRGB(color[0], color[1], color[2]);
+        inputCommand->color.r = color[0];
+        inputCommand->color.g = color[1];
+        inputCommand->color.b = color[2];
     }
 
     inputCommand->changes = (*dataInput)["changes"].as<int>();
@@ -114,11 +132,14 @@ void CServer::parseJSON(AnimationCommand *inputCommand, DynamicJsonDocument *dat
     inputCommand->xfloat = (*dataInput)["xfloat"].as<double>();
 }
 
-
+/**
+ * Main loop for the WiFi thread.
+ * Checks if there are connections and reads input data.
+ */
 [[noreturn]] void CServer::wifiLoop(void *parameter) {
     for (;;) {
         CServer::getInstance()->checkForConnections();
         CServer::getInstance()->getData();
-        delay(20);
+        delay(1);
     }
 }

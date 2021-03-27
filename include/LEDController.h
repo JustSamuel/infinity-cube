@@ -33,6 +33,7 @@ public:
     // Every Segment of the controller in an array.
     SegmentBase *strips[SEGMENT_COUNT]{};
 
+
     // Returns the LEDController to the default pre-defined states.
     void defaults();
 
@@ -48,6 +49,10 @@ public:
     // The LED array used by FastLED library.
     CRGB* ledArray;
 
+    [[noreturn]] static void testBench(void * parameter);
+
     // Current params.
-    AnimationCommand *currentCommand = new AnimationCommand();
+    AnimationCommand* currentCommand;
+
+    portMUX_TYPE mmux;
 };

@@ -14,23 +14,23 @@ public:
     AnimationCommand() = default;
 
     // id of what animation to show.
-    long animationId = 0;
+    volatile long animationId = 0;
 
     // Color provided by the JSON.
-    CRGB color;
+    volatile CRGB color;
 
     // correction bit for the animationId.
     bool setAnimation = false;
 
     // Used by the GitLabAnimation.
-    int changes = 0;
+    volatile int changes = 0;
 
     // Used by the Leap animation.
-    double xfloat = 0.0;
+    volatile double xfloat = 0.0;
 
     // Used by the Leap animation.
-    double height = 0.0;
+    volatile double height = 0.0;
 
     // If new Input has been supplied.
-    bool hasNewInput = false;
+    volatile bool hasNewInput = false;
 };
