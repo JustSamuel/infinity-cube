@@ -108,7 +108,9 @@ void CServer::getData() {
 
         // Send to LEDController.
         if (!error) {
+            portENTER_CRITICAL(&LEDController::getInstance()->mmux);
             parseJSON(LEDController::getInstance() -> currentCommand, &dataInput);
+            portEXIT_CRITICAL(&LEDController::getInstance()->mmux);
         }
     }
 }
