@@ -62,17 +62,16 @@ volatile  int animationCount = 0;
 [[noreturn]] void LEDController::testBench(void * parameter) {
     for(;;) {
         animationCount++;
-        portENTER_CRITICAL(&LEDController::getInstance()->mmux);
+
         CRGB color = CRGB(LEDController::getInstance()->currentCommand->color.r,
                           LEDController::getInstance()->currentCommand->color.g,
                           LEDController::getInstance()->currentCommand->color.b);
         double x = fCube->getLength() * LEDController::getInstance()->currentCommand->xfloat;
         double height = LEDController::getInstance()->currentCommand->height;
-        portEXIT_CRITICAL(&LEDController::getInstance()->mmux);
 
         fCube->drawGaussian(color, 1, x, height);
-
         display(10, false);
+
         if ((animationCount % 100) == 0) {
             Serial.print("Parsed animation frame: ");
             Serial.print(animationCount);
