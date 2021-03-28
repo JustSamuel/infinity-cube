@@ -15,7 +15,6 @@ LEDController::LEDController() {
     FastLED.setBrightness(BRIGHTNESS);
 
     currentCommand = new AnimationCommand();
-    vPortCPUInitializeMutex(&mmux);
 
     int indices[NUM_LEDS];
     for (int i = 0; i < NUM_LEDS; ++i) {
@@ -29,18 +28,6 @@ LEDController::LEDController() {
         strips[i] = new Segment<SEGMENT_SIZE>(fromIndex);
         delete[] fromIndex;
     }
-
-//    xMutexA = xSemaphoreCreateMutex();
-    TaskHandle_t taskHandle;
-
-    xTaskCreatePinnedToCore(
-            LEDController::testBench,      /* Function to implement the task */
-            "testBench",     /* Name of the task */
-            10000,      /* Stack size in words */
-            nullptr,    /* Task input parameter */
-            1,             /* Priority of the task */
-            &taskHandle,          /* Task handle. */
-            1);             /* Core where the task should run */
 }
 
 void LEDController::defaults() {
@@ -57,7 +44,7 @@ void LEDController::defaults() {
     }
 }
 
-volatile  int animationCount = 0;
+volatile int animationCount = 0;
 
 [[noreturn]] void LEDController::testBench(void * parameter) {
     for(;;) {

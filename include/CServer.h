@@ -25,7 +25,7 @@ class CServer {
     // For multiprocessing.
     TaskHandle_t wifiLoopTask{};
 
-    static void parseJSON(AnimationCommand *inputCommand, DynamicJsonDocument *dataInput);
+    static void parseJSON(AnimationCommand *inputCommand, DynamicJsonDocument dataInput);
 
     // Private Constructor.
     CServer();

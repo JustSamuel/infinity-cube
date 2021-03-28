@@ -69,7 +69,6 @@ CServer *CServer::getInstance() {
     return instance;
 }
 
-bool firstPass = true;
 
 /**
  * Receive the JSON and parse it using a DynamicJsonDocument.
@@ -79,12 +78,6 @@ void CServer::getData() {
     uint8_t ReceiveBuffer[JSON_PAYLOAD_SIZE];
     // Whilst there is data...
     while (remoteClient.connected() && remoteClient.available()) {
-        if (firstPass) {
-            Serial.print("First input received at");
-            Serial.println(micros());
-            firstPass = false;
-        }
-
         //...read data.
         int received = remoteClient.read(ReceiveBuffer, sizeof(ReceiveBuffer));
 
@@ -93,32 +86,29 @@ void CServer::getData() {
         data[received] = '\0';
 
         for (int i = 0; i < received; ++i) {
-            char charValue = ReceiveBuffer[i];
-            data[i] = charValue;
+            data[i] = ReceiveBuffer[i];
         }
 
         // Send what we received back.
         remoteClient.write('0');
 
         // Create JSON object.
-        DynamicJsonDocument dataInput(JSON_PAYLOAD_SIZE);
+        StaticJsonDocument<(JSON_PAYLOAD_SIZE)> dataInput;
 
         // Parse the input JSON.
         DeserializationError error = deserializeJson(dataInput, data);
 
         // Send to LEDController.
         if (!error) {
-            portENTER_CRITICAL(&LEDController::getInstance()->mmux);
-            parseJSON(LEDController::getInstance() -> currentCommand, &dataInput);
-            portEXIT_CRITICAL(&LEDController::getInstance()->mmux);
+            parseJSON(LEDController::getInstance() -> currentCommand, dataInput);
         }
     }
 }
 
-void CServer::parseJSON(AnimationCommand *inputCommand, DynamicJsonDocument *dataInput) {
-    inputCommand->animationId = (*dataInput)["animationId"].as<int>();
+void CServer::parseJSON(AnimationCommand *inputCommand, DynamicJsonDocument dataInput) {
+    inputCommand->animationId = dataInput["animationId"].as<int>();
 
-    int colorInt = (*dataInput)["color"].as<int>();
+    int colorInt = dataInput["color"].as<int>();
     if (colorInt) {
         int color[3];
         intToRGB(color, colorInt);
@@ -127,11 +117,11 @@ void CServer::parseJSON(AnimationCommand *inputCommand, DynamicJsonDocument *dat
         inputCommand->color.b = color[2];
     }
 
-    inputCommand->changes = (*dataInput)["changes"].as<int>();
+    inputCommand->changes = dataInput["changes"].as<int>();
 
-    inputCommand->height = (*dataInput)["height"].as<double>();
+    inputCommand->height = dataInput["height"].as<double>();
 
-    inputCommand->xfloat = (*dataInput)["xfloat"].as<double>();
+    inputCommand->xfloat = dataInput["xfloat"].as<double>();
 }
 
 /**

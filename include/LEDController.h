@@ -54,5 +54,4 @@ public:
     // Current params.
     AnimationCommand* currentCommand;
 
-    portMUX_TYPE mmux;
 };
