@@ -85,8 +85,7 @@ void CServer::getData() {
         data[received] = '\0';
 
         for (int i = 0; i < received; ++i) {
-            char charValue = ReceiveBuffer[i];
-            data[i] = charValue;
+            data[i] = ReceiveBuffer[i];
         }
 
         // Send what we received back.
