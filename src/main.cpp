@@ -17,12 +17,17 @@ void setup() {
 }
 
 void loop() {
-//    // Get pointer to the current command.
-//    AnimationCommand *current = LEDController::getInstance() -> currentCommand;
-//
-//    // Read params from the command
-//    fCube->setCRGB(current->color, (int)(fCube->getLength() * current->xfloat));
+    // Check if there is new input...
+    if (LEDController::getInstance()->currentCommand->hasNewInput) {
+        // ...if so, parse it.
+        LEDController::getInstance() -> parseCommand();
+    }
 
-    // Display + delay(10)
-//    display(10, false);
+    // Draw current animation.
+    if (LEDController::getInstance()->currentAnimation != nullptr) {
+        LEDController::getInstance() -> currentAnimation -> draw();
+    }
+
+    // Display and sleep.
+    display(1, false);
 }

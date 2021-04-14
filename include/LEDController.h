@@ -49,10 +49,10 @@ public:
     // The LED array used by FastLED library.
     CRGB* ledArray;
 
-    [[noreturn]] static void testBench(void * parameter);
-
     // Current params.
     AnimationCommand* currentCommand;
 
-    portMUX_TYPE mmux;
+    SemaphoreHandle_t xMutexA;
+    SemaphoreHandle_t xMutexB;
+
 };

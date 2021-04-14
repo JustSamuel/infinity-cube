@@ -19,9 +19,6 @@ public:
     // Color provided by the JSON.
     volatile CRGB color;
 
-    // correction bit for the animationId.
-    bool setAnimation = false;
-
     // Used by the GitLabAnimation.
     volatile int changes = 0;
 
