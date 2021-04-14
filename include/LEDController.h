@@ -54,4 +54,7 @@ public:
     // Current params.
     AnimationCommand* currentCommand;
 
+    SemaphoreHandle_t xMutexA;
+    SemaphoreHandle_t xMutexB;
+
 };

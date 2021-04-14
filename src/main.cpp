@@ -18,7 +18,10 @@ void setup() {
 
 void loop() {
 //    // Get pointer to the current command.
-//    AnimationCommand *current = LEDController::getInstance() -> currentCommand;
+    AnimationCommand *current = LEDController::getInstance() -> currentCommand;
+    if(current -> hasNewInput) {
+        LEDController::getInstance() -> parseCommand();
+    }
 //
 //    // Read params from the command
 //    fCube->setCRGB(current->color, (int)(fCube->getLength() * current->xfloat));

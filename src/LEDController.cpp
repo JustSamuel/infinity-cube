@@ -28,6 +28,20 @@ LEDController::LEDController() {
         strips[i] = new Segment<SEGMENT_SIZE>(fromIndex);
         delete[] fromIndex;
     }
+
+    xMutexB = xSemaphoreCreateMutex();
+    xMutexA = xSemaphoreCreateMutex();
+
+    TaskHandle_t taskHandle;
+
+    xTaskCreatePinnedToCore(
+            LEDController::testBench,      /* Function to implement the task */
+            "testBench",     /* Name of the task */
+            10000,      /* Stack size in words */
+            nullptr,    /* Task input parameter */
+            1,             /* Priority of the task */
+            &taskHandle,          /* Task handle. */
+            1);
 }
 
 void LEDController::defaults() {
@@ -44,33 +58,28 @@ void LEDController::defaults() {
     }
 }
 
-volatile int animationCount = 0;
 
 [[noreturn]] void LEDController::testBench(void * parameter) {
     for(;;) {
-        animationCount++;
+        if (LEDController::getInstance()->currentCommand->hasNewInput) {
+            xSemaphoreTake(LEDController::getInstance()->xMutexB, 0);
+            LEDController::getInstance()->currentCommand->hasNewInput = false;
+            CRGB color = CRGB(LEDController::getInstance()->currentCommand->color.r,
+                              LEDController::getInstance()->currentCommand->color.g,
+                              LEDController::getInstance()->currentCommand->color.b);
+            double x = fCube->getLength() * LEDController::getInstance()->currentCommand->xfloat;
+            double height = LEDController::getInstance()->currentCommand->height;
+            xSemaphoreGive(LEDController::getInstance()->xMutexA);
 
-        CRGB color = CRGB(LEDController::getInstance()->currentCommand->color.r,
-                          LEDController::getInstance()->currentCommand->color.g,
-                          LEDController::getInstance()->currentCommand->color.b);
-        double x = fCube->getLength() * LEDController::getInstance()->currentCommand->xfloat;
-        double height = LEDController::getInstance()->currentCommand->height;
-
-        fCube->drawGaussian(color, 1, x, height);
-        display(10, false);
-
-        if ((animationCount % 100) == 0) {
-            Serial.print("Parsed animation frame: ");
-            Serial.print(animationCount);
-            Serial.print(" : ");
-            Serial.println(micros());
+            fCube->drawGaussian(color, 1, x, height);
         }
 
-        delay(10);
+        display(1, false);
     }
 }
 
 void LEDController::parseCommand() {
+
     switch (currentCommand->animationId) {
         case 0:
             doAnimation = false;

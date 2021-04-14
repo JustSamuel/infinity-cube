@@ -100,12 +100,15 @@ void CServer::getData() {
 
         // Send to LEDController.
         if (!error) {
+            xSemaphoreTake(LEDController::getInstance() ->xMutexA, 0);
             parseJSON(LEDController::getInstance() -> currentCommand, dataInput);
+            xSemaphoreGive(LEDController::getInstance() ->xMutexB);
         }
     }
 }
 
 void CServer::parseJSON(AnimationCommand *inputCommand, DynamicJsonDocument dataInput) {
+    inputCommand->hasNewInput = true;
     inputCommand->animationId = dataInput["animationId"].as<int>();
 
     int colorInt = dataInput["color"].as<int>();
