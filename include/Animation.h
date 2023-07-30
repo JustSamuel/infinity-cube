@@ -79,3 +79,30 @@ public:
 
     CRGB currentColor = CRGB::Red;
 };
+
+class AlarmAnimation: public Animation {
+public:
+    explicit AlarmAnimation(SegmentBase *target) : Animation(target) {}
+
+    void draw() override;
+
+    bool build = true;
+
+    int animation = 0;
+
+    int step = 0;
+
+    int sat = 100;
+
+    CRGB currentColor = CRGB::Red;
+};
+
+class RainAnimation: public Animation {
+public:
+    explicit RainAnimation(SegmentBase *target) : Animation(target) {}
+
+    void draw() override;
+
+private:
+    void dissolveRaindrops();
+};

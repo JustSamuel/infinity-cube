@@ -4,6 +4,8 @@
 #pragma once
 
 #include <CServer.h>
+#include <chrono>
+
 #define ARDUINOJSON_USE_DOUBLE 0
 #include "InfintyCube.h"
 #include "AnimationCommand.h"
@@ -19,7 +21,7 @@ CServer::CServer() {
     xTaskCreatePinnedToCore(
             CServer::wifiLoop,      /* Function to implement the task */
             "WiFiLoop",     /* Name of the task */
-            10000,      /* Stack size in words */
+            30000,      /* Stack size in words */
             nullptr,    /* Task input parameter */
             1,             /* Priority of the task */
             &wifiLoopTask,          /* Task handle. */
@@ -102,6 +104,9 @@ void CServer::getData() {
             xSemaphoreTake(LEDController::getInstance() ->xMutexA, 0);
             parseJSON(LEDController::getInstance() -> currentCommand, dataInput);
             xSemaphoreGive(LEDController::getInstance() ->xMutexB);
+        } else {
+            Serial.print("Error:");
+            Serial.println(error.c_str());
         }
     }
 }
@@ -124,6 +129,8 @@ void CServer::parseJSON(AnimationCommand *inputCommand, DynamicJsonDocument data
     inputCommand->height = dataInput["height"].as<double>();
 
     inputCommand->xfloat = dataInput["xfloat"].as<double>();
+
+    ArduinoJson::copyArray(dataInput["raw"], inputCommand->raw);
 }
 
 /**

@@ -43,6 +43,15 @@ void SegmentBase::setCRGB(const CRGB &color, int i) {
 }
 
 /**
+ * Give a single LED a CRGB color.
+ * @param CRGB the color to set.
+ * @param int the index of the LED.
+ */
+CRGB SegmentBase::getCRGB(int i) {
+    return leds[getIndex(i)];
+}
+
+/**
  * Give every LED in the Segment the same color.
  * @param CRGB color to set.
  */

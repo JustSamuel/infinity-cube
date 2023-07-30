@@ -8,6 +8,7 @@ void setup() {
 
     // Initialize the controller to defaults.
     LEDController::getInstance()->defaults();
+    LEDController::getInstance()->currentAnimation = new RainAnimation(fCube);
 
     // Also initializes the WiFiServer.
     CServer::getInstance();
@@ -24,7 +25,7 @@ void loop() {
     }
 
     // Draw current animation.
-    if (LEDController::getInstance()->currentAnimation != nullptr) {
+    if (LEDController::getInstance()->currentAnimation != nullptr && LEDController::getInstance()->doAnimation) {
         LEDController::getInstance() -> currentAnimation -> draw();
     }
 

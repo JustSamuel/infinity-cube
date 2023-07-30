@@ -56,6 +56,8 @@ void LEDController::parseCommand() {
                       LEDController::getInstance()->currentCommand->color.b);
     double x = fCube->getLength() * LEDController::getInstance()->currentCommand->xfloat;
     double height = LEDController::getInstance()->currentCommand->height;
+    int raw[NUM_LEDS] = {};
+    std::copy(LEDController::getInstance()->currentCommand->raw, LEDController::getInstance()->currentCommand->raw + NUM_LEDS, raw);
     xSemaphoreGive(LEDController::getInstance()->xMutexA);
 
     switch (animationId) {
@@ -74,6 +76,17 @@ void LEDController::parseCommand() {
             currentAnimation = nullptr;
             fCube->drawGaussian(color, 1, x, height);
             break;
+        case 4:
+            doAnimation = true;
+            currentAnimation = new AlarmAnimation(fCube);
+            break;
+        case 5:
+            doAnimation = false;
+            int colorArr[3];
+            for (int i = 0; i < NUM_LEDS; ++i) {
+                intToRGB(colorArr, raw[i]);
+                leds[i] = CRGB(colorArr[0], colorArr[1], colorArr[2]);
+            }
         default:
             break;
     }

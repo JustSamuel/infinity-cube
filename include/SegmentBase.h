@@ -46,6 +46,13 @@ class SegmentBase {
         void setCRGB(const CRGB&, int);
 
         /**
+        * Returns the color of LED at index i.
+        * @param CRGB color to set.
+        * @param int Index of LED.
+        */
+        CRGB getCRGB(int);
+
+        /**
          * Draw to the led using a Gaussian distribution for a 'glowing' feel.
          */
         void drawGaussian(CRGB &, double a, double b, double c);

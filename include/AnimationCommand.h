@@ -3,6 +3,7 @@
 //
 #pragma once
 #include <FastLED.h>
+#include "Config.h"
 
 /**
  * Class wrapper for the JSON input.
@@ -18,6 +19,9 @@ public:
 
     // Color provided by the JSON.
     volatile CRGB color;
+
+    // For displaying raw leds.
+    volatile int raw[NUM_LEDS] = {};
 
     // Used by the GitLabAnimation.
     volatile int changes = 0;
